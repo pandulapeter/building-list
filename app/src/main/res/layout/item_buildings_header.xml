@@ -12,7 +12,14 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/content_padding"
-        android:text="@{@plurals/buildings_header(uiModel.buildingCount, uiModel.buildingCount)}" />
+        android:layout_marginTop="@dimen/small_content_padding"
+        android:minHeight="@dimen/touch_target"
+        android:paddingStart="@dimen/content_padding"
+        android:paddingTop="@dimen/small_content_padding"
+        android:paddingEnd="@dimen/content_padding"
+        android:paddingBottom="@dimen/small_content_padding"
+        android:text="@{@plurals/buildings_header(uiModel.buildingCount, uiModel.buildingCount)}"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textStyle="bold" />
 
 </layout>

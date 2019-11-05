@@ -20,7 +20,7 @@ class BuildingListViewModel(
     private val _items = MutableLiveData<List<UiModel>>()
 
     private var isFilterByCountryExpanded by RefreshingProperty(true)
-    private var selectedCountryIds by RefreshingProperty(emptyList<String>())
+    private var selectedCountryIds by RefreshingProperty(Country.values().map { it.id })
     private var isSortByExpanded by RefreshingProperty(true)
     private var selectedSortingMode: SortingMode by RefreshingProperty(SortingMode.CONSTRUCTION_YEAR)
 
