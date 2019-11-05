@@ -34,6 +34,8 @@ sealed class UiModel {
     data class Building(
         override val id: String,
         val name: String,
+        val height: Int,
+        val constructionYear: Int,
         @DrawableRes val thumbnailDrawableResourceId: Int
     ) : UiModel()
 }

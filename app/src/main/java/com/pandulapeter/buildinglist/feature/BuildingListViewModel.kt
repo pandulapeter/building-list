@@ -118,6 +118,8 @@ class BuildingListViewModel(
             UiModel.Building(
                 id = building.id,
                 name = building.name,
+                height = building.height,
+                constructionYear = building.constructionYear,
                 thumbnailDrawableResourceId = building.thumbnailDrawableResourceId
             )
         })
