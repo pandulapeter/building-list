@@ -3,6 +3,7 @@
     package="com.pandulapeter.buildinglist">
 
     <application
+        android:name=".BuildingListApplication"
         android:allowBackup="true"
         android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
@@ -11,7 +12,7 @@
         android:theme="@style/SplashTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".BuildingListActivity">
+        <activity android:name=".feature.BuildingListActivity">
 
             <intent-filter>
 
