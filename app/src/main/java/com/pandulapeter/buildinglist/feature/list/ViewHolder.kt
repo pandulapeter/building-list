@@ -56,7 +56,20 @@ sealed class ViewHolder<B : ViewDataBinding, M : UiModel>(protected val binding:
     class SortingOption(
         parent: ViewGroup,
         onItemClicked: (position: Int) -> Unit
-    ) : ViewHolder<ItemSortingOptionBinding, UiModel.SortingOption>(parent.inflate(R.layout.item_sorting_option))
+    ) : ViewHolder<ItemSortingOptionBinding, UiModel.SortingOption>(parent.inflate(R.layout.item_sorting_option)) {
+
+        init {
+            binding.radioButton.setOnCheckedChangeListener { _, newValue ->
+                if (binding.uiModel?.isChecked != newValue) {
+                    adapterPosition.let { adapterPosition ->
+                        if (adapterPosition != RecyclerView.NO_POSITION) {
+                            onItemClicked(adapterPosition)
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     class BuildingsHeader(
         parent: ViewGroup

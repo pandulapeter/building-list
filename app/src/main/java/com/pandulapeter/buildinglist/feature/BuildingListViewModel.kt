@@ -58,7 +58,7 @@ class BuildingListViewModel(
                 )
             )
             if (isFilterByCountryExpanded) {
-                addAll(Country.values().map { country ->
+                addAll(Country.values().sortedBy { it.name }.map { country ->
                     UiModel.FilterOption(
                         id = country.id,
                         titleResourceId = country.nameResourceId,
