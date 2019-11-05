@@ -48,6 +48,10 @@ class BuildingListViewModel(
         selectedSortingMode = SortingMode.values().first { it.id == sortingOptionId }
     }
 
+    fun isItemFullWidth(position: Int) = _items.value?.get(position)?.let {
+        it is UiModel.FilterOption || it is UiModel.Building
+    } == true
+
     private fun refreshItems() {
         _items.value = mutableListOf<UiModel>().apply {
             addFilterSection()
@@ -101,7 +105,7 @@ class BuildingListViewModel(
             .sortedBy {
                 when (selectedSortingMode) {
                     SortingMode.CONSTRUCTION_YEAR -> it.constructionYear
-                    SortingMode.HEIGHT -> it.height
+                    SortingMode.HEIGHT -> -it.height
                 }
             }
 

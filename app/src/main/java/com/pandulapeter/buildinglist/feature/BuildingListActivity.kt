@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.pandulapeter.buildinglist.R
 import com.pandulapeter.buildinglist.databinding.ActivityBuildingListBinding
 import com.pandulapeter.buildinglist.feature.list.Adapter
@@ -22,7 +22,12 @@ class BuildingListActivity : AppCompatActivity() {
             binding.viewModel = viewModel
             binding.lifecycleOwner = this
             binding.recyclerView.apply {
-                layoutManager = LinearLayoutManager(this@BuildingListActivity)
+                val maxSpan = SPAN_FULL
+                layoutManager = GridLayoutManager(this@BuildingListActivity, maxSpan).apply {
+                    spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                        override fun getSpanSize(position: Int) = if (viewModel.isItemFullWidth(position)) SPAN_ONE else maxSpan
+                    }
+                }
                 val buildingAdapter = Adapter(
                     onExpandableHeaderClicked = viewModel::onExpandableHeaderClicked,
                     onFilterOptionClicked = viewModel::onFilterOptionClicked,
@@ -33,5 +38,10 @@ class BuildingListActivity : AppCompatActivity() {
                 setHasFixedSize(true)
             }
         }
+    }
+
+    companion object {
+        private const val SPAN_FULL = 2
+        private const val SPAN_ONE = 1
     }
 }
