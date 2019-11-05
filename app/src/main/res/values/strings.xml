@@ -2,5 +2,15 @@
 <resources>
 
     <string name="app_name">Building List</string>
+    <string name="filter_by_country">Filter by country</string>
+    <string name="sort_by">Sort by</string>
+    <string name="construction_year">Construction year</string>
+    <string name="height">Height</string>
+    <plurals name="buildings_header">
+        <item quantity="one">%d building</item>
+        <item quantity="other">%d buildings</item>
+    </plurals>
+
+    <string name="country_united_arab_emirates">United Arab Emirates</string>
 
 </resources>

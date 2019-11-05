@@ -1,12 +1,12 @@
 package com.pandulapeter.buildinglist
 
-import com.pandulapeter.buildinglist.data.repository.BuildingRepository
+import com.pandulapeter.buildinglist.data.repository.Repository
 import com.pandulapeter.buildinglist.feature.BuildingListViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 private val repositoryModule = module {
-    single { BuildingRepository() }
+    single { Repository() }
 }
 
 private val featureModule = module {
