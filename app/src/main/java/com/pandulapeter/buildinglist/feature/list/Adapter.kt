@@ -5,13 +5,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 
-class Adapter : ListAdapter<UiModel, ViewHolder<*, *>>(object : DiffUtil.ItemCallback<UiModel>() {
+class Adapter(
+    private val onExpandableHeaderClicked: (position: Int) -> Unit,
+    private val onFilterOptionClicked: (countryId: String) -> Unit,
+    private val onSortingOptionClicked: (sortingOptionId: String) -> Unit
+) : ListAdapter<UiModel, ViewHolder<*, *>>(object : DiffUtil.ItemCallback<UiModel>() {
+
     override fun areItemsTheSame(oldItem: UiModel, newItem: UiModel) = oldItem.id == newItem.id
 
     @SuppressLint("DiffUtilEquals")
     override fun areContentsTheSame(oldItem: UiModel, newItem: UiModel) = oldItem == newItem
-}) {
 
+}) {
     override fun getItemViewType(position: Int) = when (getItem(position)) {
         is UiModel.ExpandableHeader -> TYPE_EXPANDABLE_HEADER
         is UiModel.FilterOption -> TYPE_FILTER_OPTION
@@ -21,9 +26,9 @@ class Adapter : ListAdapter<UiModel, ViewHolder<*, *>>(object : DiffUtil.ItemCal
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
-        TYPE_EXPANDABLE_HEADER -> ViewHolder.ExpandableHeader(parent)
-        TYPE_FILTER_OPTION -> ViewHolder.FilterOption(parent)
-        TYPE_SORTING_OPTION -> ViewHolder.SortingOption(parent)
+        TYPE_EXPANDABLE_HEADER -> ViewHolder.ExpandableHeader(parent) { position -> onExpandableHeaderClicked(position) }
+        TYPE_FILTER_OPTION -> ViewHolder.FilterOption(parent) { position -> onFilterOptionClicked((getItem(position) as UiModel.FilterOption).id) }
+        TYPE_SORTING_OPTION -> ViewHolder.SortingOption(parent) { position -> onSortingOptionClicked((getItem(position) as UiModel.SortingOption).id) }
         TYPE_BUILDINGS_HEADER -> ViewHolder.BuildingsHeader(parent)
         TYPE_BUILDING -> ViewHolder.Building(parent)
         else -> throw IllegalArgumentException("Unsupported view type: $viewType")

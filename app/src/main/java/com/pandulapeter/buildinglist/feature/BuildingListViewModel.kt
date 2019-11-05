@@ -20,12 +20,33 @@ class BuildingListViewModel(
     private val _items = MutableLiveData<List<UiModel>>()
 
     private var isFilterByCountryExpanded by RefreshingProperty(true)
-    private val selectedCountryIds by RefreshingProperty(emptyList<String>())
+    private var selectedCountryIds by RefreshingProperty(emptyList<String>())
     private var isSortByExpanded by RefreshingProperty(true)
     private var selectedSortingMode: SortingMode by RefreshingProperty(SortingMode.CONSTRUCTION_YEAR)
 
     init {
         refreshItems()
+    }
+
+    fun onExpandableHeaderClicked(position: Int) {
+        when ((_items.value?.get(position) as? UiModel.ExpandableHeader?)?.id) {
+            ID_FILTER_BY_COUNTRY -> isFilterByCountryExpanded = !isFilterByCountryExpanded
+            ID_SORT_BY -> isSortByExpanded = !isSortByExpanded
+        }
+    }
+
+    fun onFilterOptionClicked(countryId: String) {
+        selectedCountryIds = if (selectedCountryIds.contains(countryId)) {
+            selectedCountryIds.filter { it == countryId }
+        } else {
+            selectedCountryIds.toMutableList().apply {
+                add(countryId)
+            }
+        }
+    }
+
+    fun onSortingOptionClicked(sortingOptionId: String) {
+        selectedSortingMode = SortingMode.values().first { it.id == sortingOptionId }
     }
 
     private fun refreshItems() {
@@ -37,14 +58,16 @@ class BuildingListViewModel(
                     isExpanded = isFilterByCountryExpanded
                 )
             )
-            addAll(Country.values().map { country ->
-                UiModel.FilterOption(
-                    id = country.id,
-                    titleResourceId = country.nameResourceId,
-                    isChecked = selectedCountryIds.contains(country.id),
-                    icon = country.flagDrawableResourceId
-                )
-            })
+            if (isFilterByCountryExpanded) {
+                addAll(Country.values().map { country ->
+                    UiModel.FilterOption(
+                        id = country.id,
+                        titleResourceId = country.nameResourceId,
+                        isChecked = selectedCountryIds.contains(country.id),
+                        icon = country.flagDrawableResourceId
+                    )
+                })
+            }
             add(
                 UiModel.ExpandableHeader(
                     id = ID_SORT_BY,
@@ -52,13 +75,15 @@ class BuildingListViewModel(
                     isExpanded = isSortByExpanded
                 )
             )
-            addAll(SortingMode.values().map { sortByMode ->
-                UiModel.SortingOption(
-                    id = sortByMode.id,
-                    titleResourceId = sortByMode.nameResourceId,
-                    isChecked = sortByMode == selectedSortingMode
-                )
-            })
+            if (isSortByExpanded) {
+                addAll(SortingMode.values().map { sortByMode ->
+                    UiModel.SortingOption(
+                        id = sortByMode.id,
+                        titleResourceId = sortByMode.nameResourceId,
+                        isChecked = sortByMode == selectedSortingMode
+                    )
+                })
+            }
 
             val buildings = repository.buildings
                 .filter { selectedCountryIds.contains(it.country.id) }
@@ -98,8 +123,10 @@ class BuildingListViewModel(
         override fun getValue(thisRef: BuildingListViewModel, property: KProperty<*>) = value
 
         override fun setValue(thisRef: BuildingListViewModel, property: KProperty<*>, value: T) {
-            this.value = value
-            thisRef.refreshItems()
+            if (this.value != value) {
+                this.value = value
+                thisRef.refreshItems()
+            }
         }
     }
 

@@ -23,7 +23,11 @@ class BuildingListActivity : AppCompatActivity() {
             binding.lifecycleOwner = this
             binding.recyclerView.apply {
                 layoutManager = LinearLayoutManager(this@BuildingListActivity)
-                val buildingAdapter = Adapter()
+                val buildingAdapter = Adapter(
+                    onExpandableHeaderClicked = viewModel::onExpandableHeaderClicked,
+                    onFilterOptionClicked = viewModel::onFilterOptionClicked,
+                    onSortingOptionClicked = viewModel::onSortingOptionClicked
+                )
                 viewModel.items.observe(this@BuildingListActivity, Observer<List<UiModel>> { items -> buildingAdapter.submitList(items) })
                 adapter = buildingAdapter
                 setHasFixedSize(true)
