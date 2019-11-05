@@ -28,16 +28,15 @@ class BuildingListViewModel(
         refreshItems()
     }
 
-    fun onExpandableHeaderClicked(position: Int) {
-        when ((_items.value?.get(position) as? UiModel.ExpandableHeader?)?.id) {
-            ID_FILTER_BY_COUNTRY -> isFilterByCountryExpanded = !isFilterByCountryExpanded
-            ID_SORT_BY -> isSortByExpanded = !isSortByExpanded
-        }
+    fun onExpandableHeaderClicked(headerId: String) = when (headerId) {
+        ID_FILTER_BY_COUNTRY -> isFilterByCountryExpanded = !isFilterByCountryExpanded
+        ID_SORT_BY -> isSortByExpanded = !isSortByExpanded
+        else -> throw IllegalArgumentException("Invalid header ID: $headerId")
     }
 
     fun onFilterOptionClicked(countryId: String) {
         selectedCountryIds = if (selectedCountryIds.contains(countryId)) {
-            selectedCountryIds.filter { it == countryId }
+            selectedCountryIds.filterNot { it == countryId }
         } else {
             selectedCountryIds.toMutableList().apply {
                 add(countryId)
@@ -64,7 +63,7 @@ class BuildingListViewModel(
                         id = country.id,
                         titleResourceId = country.nameResourceId,
                         isChecked = selectedCountryIds.contains(country.id),
-                        icon = country.flagDrawableResourceId
+                        iconResourceId = country.flagDrawableResourceId
                     )
                 })
             }

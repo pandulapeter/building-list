@@ -12,5 +12,7 @@
     </plurals>
 
     <string name="country_united_arab_emirates">United Arab Emirates</string>
+    <string name="country_china">China</string>
+    <string name="country_saudi_arabia">Saudi Arabia</string>
 
 </resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="keyline">16dp</dimen>
+    <dimen name="small_content_padding">4dp</dimen>
+    <dimen name="content_padding">8dp</dimen>
+    <dimen name="large_content_padding">16dp</dimen>
+    <dimen name="touch_target">36dp</dimen>
+
+</resources>

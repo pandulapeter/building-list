@@ -13,6 +13,14 @@ enum class Country(
 
     UNITED_ARAB_EMIRATES(
         nameResourceId = R.string.country_united_arab_emirates,
-        flagDrawableResourceId = 0
+        flagDrawableResourceId = R.drawable.flag_united_arab_emirates
+    ),
+    CHINA(
+        nameResourceId = R.string.country_china,
+        flagDrawableResourceId = R.drawable.flag_china
+    ),
+    SAUDI_ARABIA(
+        nameResourceId = R.string.country_saudi_arabia,
+        flagDrawableResourceId = R.drawable.flag_saudi_arabia
     )
 }

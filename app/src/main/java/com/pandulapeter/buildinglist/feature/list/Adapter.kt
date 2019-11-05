@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 
 class Adapter(
-    private val onExpandableHeaderClicked: (position: Int) -> Unit,
+    private val onExpandableHeaderClicked: (headerId: String) -> Unit,
     private val onFilterOptionClicked: (countryId: String) -> Unit,
     private val onSortingOptionClicked: (sortingOptionId: String) -> Unit
 ) : ListAdapter<UiModel, ViewHolder<*, *>>(object : DiffUtil.ItemCallback<UiModel>() {
@@ -15,6 +15,11 @@ class Adapter(
 
     @SuppressLint("DiffUtilEquals")
     override fun areContentsTheSame(oldItem: UiModel, newItem: UiModel) = oldItem == newItem
+
+    override fun getChangePayload(oldItem: UiModel, newItem: UiModel) = when {
+        oldItem is UiModel.FilterOption && newItem is UiModel.FilterOption -> Unit
+        else -> null
+    }
 
 }) {
     override fun getItemViewType(position: Int) = when (getItem(position)) {
@@ -26,7 +31,7 @@ class Adapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
-        TYPE_EXPANDABLE_HEADER -> ViewHolder.ExpandableHeader(parent) { position -> onExpandableHeaderClicked(position) }
+        TYPE_EXPANDABLE_HEADER -> ViewHolder.ExpandableHeader(parent) { position -> onExpandableHeaderClicked((getItem(position) as UiModel.ExpandableHeader).id) }
         TYPE_FILTER_OPTION -> ViewHolder.FilterOption(parent) { position -> onFilterOptionClicked((getItem(position) as UiModel.FilterOption).id) }
         TYPE_SORTING_OPTION -> ViewHolder.SortingOption(parent) { position -> onSortingOptionClicked((getItem(position) as UiModel.SortingOption).id) }
         TYPE_BUILDINGS_HEADER -> ViewHolder.BuildingsHeader(parent)

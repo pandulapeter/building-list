@@ -12,13 +12,19 @@ import com.pandulapeter.buildinglist.databinding.ItemFilterOptionBinding
 import com.pandulapeter.buildinglist.databinding.ItemSortingOptionBinding
 import com.pandulapeter.buildinglist.util.inflate
 
-sealed class ViewHolder<B : ViewDataBinding, M : UiModel>(
-    private val binding: B,
-    onItemClicked: ((position: Int) -> Unit)? = null
-) : RecyclerView.ViewHolder(binding.root) {
+sealed class ViewHolder<B : ViewDataBinding, M : UiModel>(protected val binding: B) : RecyclerView.ViewHolder(binding.root) {
 
-    init {
-        if (onItemClicked != null) {
+    fun bind(uiModel: M) = binding.run {
+        setVariable(BR.uiModel, uiModel)
+        executePendingBindings()
+    }
+
+    class ExpandableHeader(
+        parent: ViewGroup,
+        onItemClicked: (position: Int) -> Unit
+    ) : ViewHolder<ItemExpandableHeaderBinding, UiModel.ExpandableHeader>(parent.inflate(R.layout.item_expandable_header)) {
+
+        init {
             binding.root.setOnClickListener {
                 adapterPosition.let { adapterPosition ->
                     if (adapterPosition != RecyclerView.NO_POSITION) {
@@ -29,25 +35,28 @@ sealed class ViewHolder<B : ViewDataBinding, M : UiModel>(
         }
     }
 
-    fun bind(uiModel: M) = binding.run {
-        setVariable(BR.uiModel, uiModel)
-        executePendingBindings()
-    }
-
-    class ExpandableHeader(
-        parent: ViewGroup,
-        onItemClicked: (position: Int) -> Unit
-    ) : ViewHolder<ItemExpandableHeaderBinding, UiModel.ExpandableHeader>(parent.inflate(R.layout.item_expandable_header), onItemClicked)
-
     class FilterOption(
         parent: ViewGroup,
         onItemClicked: (position: Int) -> Unit
-    ) : ViewHolder<ItemFilterOptionBinding, UiModel.FilterOption>(parent.inflate(R.layout.item_filter_option), onItemClicked)
+    ) : ViewHolder<ItemFilterOptionBinding, UiModel.FilterOption>(parent.inflate(R.layout.item_filter_option)) {
+
+        init {
+            binding.checkbox.setOnCheckedChangeListener { _, newValue ->
+                if (binding.uiModel?.isChecked != newValue) {
+                    adapterPosition.let { adapterPosition ->
+                        if (adapterPosition != RecyclerView.NO_POSITION) {
+                            onItemClicked(adapterPosition)
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     class SortingOption(
         parent: ViewGroup,
         onItemClicked: (position: Int) -> Unit
-    ) : ViewHolder<ItemSortingOptionBinding, UiModel.SortingOption>(parent.inflate(R.layout.item_sorting_option), onItemClicked)
+    ) : ViewHolder<ItemSortingOptionBinding, UiModel.SortingOption>(parent.inflate(R.layout.item_sorting_option))
 
     class BuildingsHeader(
         parent: ViewGroup

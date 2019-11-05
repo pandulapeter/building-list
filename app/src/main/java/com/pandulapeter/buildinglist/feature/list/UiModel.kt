@@ -17,7 +17,7 @@ sealed class UiModel {
         override val id: String,
         @StringRes val titleResourceId: Int,
         val isChecked: Boolean,
-        @DrawableRes val icon: Int
+        @DrawableRes val iconResourceId: Int
     ) : UiModel()
 
     data class SortingOption(
