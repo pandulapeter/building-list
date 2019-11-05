@@ -50,63 +50,74 @@ class BuildingListViewModel(
 
     private fun refreshItems() {
         _items.value = mutableListOf<UiModel>().apply {
-            add(
-                UiModel.ExpandableHeader(
-                    id = ID_FILTER_BY_COUNTRY,
-                    titleResourceId = R.string.filter_by_country,
-                    isExpanded = isFilterByCountryExpanded
-                )
-            )
-            if (isFilterByCountryExpanded) {
-                addAll(Country.values().map { country ->
-                    UiModel.FilterOption(
-                        id = country.id,
-                        titleResourceId = country.nameResourceId,
-                        isChecked = selectedCountryIds.contains(country.id),
-                        iconResourceId = country.flagDrawableResourceId
-                    )
-                })
-            }
-            add(
-                UiModel.ExpandableHeader(
-                    id = ID_SORT_BY,
-                    titleResourceId = R.string.sort_by,
-                    isExpanded = isSortByExpanded
-                )
-            )
-            if (isSortByExpanded) {
-                addAll(SortingMode.values().map { sortByMode ->
-                    UiModel.SortingOption(
-                        id = sortByMode.id,
-                        titleResourceId = sortByMode.nameResourceId,
-                        isChecked = sortByMode == selectedSortingMode
-                    )
-                })
-            }
+            addFilterSection()
+            addSortingSection()
+            addBuildingSection()
+        }
+    }
 
-            val buildings = repository.buildings
-                .filter { selectedCountryIds.contains(it.country.id) }
-                .sortedBy {
-                    when (selectedSortingMode) {
-                        SortingMode.CONSTRUCTION_YEAR -> it.constructionYear
-                        SortingMode.HEIGHT -> it.height
-                    }
-                }
-
-            add(
-                UiModel.BuildingsHeader(
-                    id = ID_BUILDINGS_HEADER,
-                    buildingCount = buildings.size
-                )
+    private fun MutableList<UiModel>.addFilterSection() {
+        add(
+            UiModel.ExpandableHeader(
+                id = ID_FILTER_BY_COUNTRY,
+                titleResourceId = R.string.filter_by_country,
+                isExpanded = isFilterByCountryExpanded
             )
-            addAll(buildings.map { building ->
-                UiModel.Building(
-                    id = building.id,
-                    name = building.name,
-                    thumbnailDrawableResourceId = building.thumbnailDrawableResourceId
+        )
+        if (isFilterByCountryExpanded) {
+            addAll(Country.values().map { country ->
+                UiModel.FilterOption(
+                    id = country.id,
+                    titleResourceId = country.nameResourceId,
+                    isChecked = selectedCountryIds.contains(country.id),
+                    iconResourceId = country.flagDrawableResourceId
                 )
             })
         }
+    }
+
+    private fun MutableList<UiModel>.addSortingSection() {
+        add(
+            UiModel.ExpandableHeader(
+                id = ID_SORT_BY,
+                titleResourceId = R.string.sort_by,
+                isExpanded = isSortByExpanded
+            )
+        )
+        if (isSortByExpanded) {
+            addAll(SortingMode.values().map { sortByMode ->
+                UiModel.SortingOption(
+                    id = sortByMode.id,
+                    titleResourceId = sortByMode.nameResourceId,
+                    isChecked = sortByMode == selectedSortingMode
+                )
+            })
+        }
+    }
+
+    private fun MutableList<UiModel>.addBuildingSection() {
+        val buildings = repository.buildings
+            .filter { selectedCountryIds.contains(it.country.id) }
+            .sortedBy {
+                when (selectedSortingMode) {
+                    SortingMode.CONSTRUCTION_YEAR -> it.constructionYear
+                    SortingMode.HEIGHT -> it.height
+                }
+            }
+
+        add(
+            UiModel.BuildingsHeader(
+                id = ID_BUILDINGS_HEADER,
+                buildingCount = buildings.size
+            )
+        )
+        addAll(buildings.map { building ->
+            UiModel.Building(
+                id = building.id,
+                name = building.name,
+                thumbnailDrawableResourceId = building.thumbnailDrawableResourceId
+            )
+        })
     }
 
     private enum class SortingMode(
