@@ -5,6 +5,9 @@
         <item name="android:windowBackground">@drawable/bg_splash</item>
     </style>
 
-    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar" />
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="android:statusBarColor">@color/primary</item>
+    </style>
 
 </resources>

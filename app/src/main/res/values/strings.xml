@@ -11,8 +11,15 @@
         <item quantity="other">%d buildings</item>
     </plurals>
 
-    <string name="country_united_arab_emirates">United Arab Emirates</string>
     <string name="country_china">China</string>
+    <string name="country_kuwait">Kuwait</string>
+    <string name="country_malaysia">Malaysia</string>
+    <string name="country_russia">Russia</string>
     <string name="country_saudi_arabia">Saudi Arabia</string>
+    <string name="country_south_korea">South Korea</string>
+    <string name="country_taiwan">Taiwan</string>
+    <string name="country_united_arab_emirates">United Arab Emirates</string>
+    <string name="country_united_states_of_america">United States of America</string>
+    <string name="country_vietnam">Vietnam</string>
 
 </resources>
