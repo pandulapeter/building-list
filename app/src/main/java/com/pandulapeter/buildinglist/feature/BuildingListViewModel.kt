@@ -18,11 +18,10 @@ class BuildingListViewModel(
 
     val items: LiveData<List<UiModel>> get() = _items
     private val _items = MutableLiveData<List<UiModel>>()
-
     private var isFilterByCountryExpanded by RefreshingProperty(true)
     private var selectedCountryIds by RefreshingProperty(Country.values().map { it.id })
     private var isSortByExpanded by RefreshingProperty(true)
-    private var selectedSortingMode: SortingMode by RefreshingProperty(SortingMode.CONSTRUCTION_YEAR)
+    private var selectedSortingMode: SortingMode by RefreshingProperty(SortingMode.HEIGHT)
 
     init {
         refreshItems()
@@ -128,8 +127,8 @@ class BuildingListViewModel(
         val id: String = UUID.randomUUID().toString(),
         @StringRes val nameResourceId: Int
     ) {
-        CONSTRUCTION_YEAR(nameResourceId = R.string.construction_year),
-        HEIGHT(nameResourceId = R.string.height)
+        HEIGHT(nameResourceId = R.string.height),
+        CONSTRUCTION_YEAR(nameResourceId = R.string.construction_year)
     }
 
     private class RefreshingProperty<T>(private var value: T) : ReadWriteProperty<BuildingListViewModel, T> {

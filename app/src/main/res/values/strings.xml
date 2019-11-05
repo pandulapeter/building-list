@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- General -->
     <string name="app_name">Building List</string>
+
+    <!-- Controls -->
     <string name="filter_by_country">Filter by country</string>
     <string name="sort_by">Sort by</string>
-    <string name="construction_year">Construction year</string>
     <string name="height">Height</string>
+    <string name="construction_year">Construction year</string>
     <plurals name="buildings_header">
         <item quantity="one">%d building</item>
         <item quantity="other">%d buildings</item>
     </plurals>
 
+    <!-- Countries -->
     <string name="country_china">China</string>
     <string name="country_kuwait">Kuwait</string>
     <string name="country_malaysia">Malaysia</string>
