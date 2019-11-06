@@ -4,7 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.pandulapeter.buildinglist.util.Adapter
 
-sealed class UiModel : Adapter.UiModel {
+sealed class UiModel : Adapter.UiModel<String> {
 
     abstract override val id: String
 

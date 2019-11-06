@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.reflect.KClass
 
-class Adapter<M : Adapter.UiModel, VH : Adapter.ViewHolder<M>>(
+class Adapter<M : Adapter.UiModel<*>, VH : Adapter.ViewHolder<M>>(
     private val delegates: List<Pair<KClass<out M>, (ViewGroup) -> VH>>,
     changePayload: (oldItem: M, newItem: M) -> Any? = { _, _ -> null }
 ) : ListAdapter<M, VH>(object : DiffUtil.ItemCallback<M>() {
@@ -26,14 +26,14 @@ class Adapter<M : Adapter.UiModel, VH : Adapter.ViewHolder<M>>(
 
     public override fun getItem(position: Int): M = super.getItem(position)
 
-    interface UiModel {
+    interface UiModel<ID: Any> {
 
-        val id: String
+        val id: ID
 
         override fun equals(other: Any?): Boolean
     }
 
-    abstract class ViewHolder<M : UiModel>(view: View) : RecyclerView.ViewHolder(view) {
+    abstract class ViewHolder<M : UiModel<*>>(view: View) : RecyclerView.ViewHolder(view) {
 
         abstract fun bind(model: M)
     }
