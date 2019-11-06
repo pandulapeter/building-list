@@ -2,10 +2,11 @@ package com.pandulapeter.buildinglist.feature.list
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import com.pandulapeter.buildinglist.util.Adapter
 
-sealed class UiModel {
+sealed class UiModel : Adapter.UiModel {
 
-    abstract val id: String
+    abstract override val id: String
 
     data class ExpandableHeader(
         override val id: String,

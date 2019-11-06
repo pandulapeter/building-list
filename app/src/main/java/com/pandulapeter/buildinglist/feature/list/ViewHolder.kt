@@ -10,25 +10,26 @@ import com.pandulapeter.buildinglist.databinding.ItemBuildingsHeaderBinding
 import com.pandulapeter.buildinglist.databinding.ItemExpandableHeaderBinding
 import com.pandulapeter.buildinglist.databinding.ItemFilterOptionBinding
 import com.pandulapeter.buildinglist.databinding.ItemSortingOptionBinding
+import com.pandulapeter.buildinglist.util.Adapter
 import com.pandulapeter.buildinglist.util.inflate
 
-sealed class ViewHolder<B : ViewDataBinding, M : UiModel>(protected val binding: B) : RecyclerView.ViewHolder(binding.root) {
+sealed class ViewHolder<B : ViewDataBinding, M : UiModel>(protected val binding: B) : Adapter.ViewHolder<UiModel>(binding.root) {
 
-    fun bind(uiModel: M) = binding.run {
-        setVariable(BR.uiModel, uiModel)
+    override fun bind(model: UiModel) = binding.run {
+        setVariable(BR.uiModel, model)
         executePendingBindings()
     }
 
     class ExpandableHeader(
         parent: ViewGroup,
-        onItemClicked: (position: Int) -> Unit
+        onItemClicked: (position: UiModel.ExpandableHeader) -> Unit
     ) : ViewHolder<ItemExpandableHeaderBinding, UiModel.ExpandableHeader>(parent.inflate(R.layout.item_expandable_header)) {
 
         init {
             binding.root.setOnClickListener {
-                adapterPosition.let { adapterPosition ->
+                binding.uiModel?.also { uiModel ->
                     if (adapterPosition != RecyclerView.NO_POSITION) {
-                        onItemClicked(adapterPosition)
+                        onItemClicked(uiModel)
                     }
                 }
             }
@@ -37,15 +38,15 @@ sealed class ViewHolder<B : ViewDataBinding, M : UiModel>(protected val binding:
 
     class FilterOption(
         parent: ViewGroup,
-        onItemClicked: (position: Int) -> Unit
+        onItemClicked: (filterOptionId: String) -> Unit
     ) : ViewHolder<ItemFilterOptionBinding, UiModel.FilterOption>(parent.inflate(R.layout.item_filter_option)) {
 
         init {
             binding.checkbox.setOnCheckedChangeListener { _, newValue ->
-                if (binding.uiModel?.isChecked != newValue) {
-                    adapterPosition.let { adapterPosition ->
+                binding.uiModel?.also { uiModel ->
+                    if (uiModel.isChecked != newValue) {
                         if (adapterPosition != RecyclerView.NO_POSITION) {
-                            onItemClicked(adapterPosition)
+                            onItemClicked(uiModel.id)
                         }
                     }
                 }
@@ -55,15 +56,15 @@ sealed class ViewHolder<B : ViewDataBinding, M : UiModel>(protected val binding:
 
     class SortingOption(
         parent: ViewGroup,
-        onItemClicked: (position: Int) -> Unit
+        onItemClicked: (sortingOptionId: String) -> Unit
     ) : ViewHolder<ItemSortingOptionBinding, UiModel.SortingOption>(parent.inflate(R.layout.item_sorting_option)) {
 
         init {
             binding.radioButton.setOnCheckedChangeListener { _, newValue ->
-                if (binding.uiModel?.isChecked != newValue) {
-                    adapterPosition.let { adapterPosition ->
+                binding.uiModel?.also { uiModel ->
+                    if (uiModel.isChecked != newValue) {
                         if (adapterPosition != RecyclerView.NO_POSITION) {
-                            onItemClicked(adapterPosition)
+                            onItemClicked(uiModel.id)
                         }
                     }
                 }
