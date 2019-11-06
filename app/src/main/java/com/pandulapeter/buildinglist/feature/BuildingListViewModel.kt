@@ -21,7 +21,7 @@ class BuildingListViewModel(
     private var isFilterByCountryExpanded by RefreshingProperty(true)
     private var selectedCountryIds by RefreshingProperty(Country.values().map { it.id })
     private var isSortByExpanded by RefreshingProperty(true)
-    private var selectedSortingMode: SortingMode by RefreshingProperty(SortingMode.HEIGHT)
+    private var selectedSortingMode by RefreshingProperty(SortingMode.HEIGHT)
 
     init {
         refreshItems()
