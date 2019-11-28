@@ -5,7 +5,7 @@
 
 ### Attribution
 - Data and building images from [https://en.wikipedia.org/wiki/List_of_tallest_buildings](https://en.wikipedia.org/wiki/List_of_tallest_buildings).
-- Flags icons from [https://github.com/Shusshu/android-flags](https://github.com/Shusshu/android-flags).
+- Flag icons from [https://github.com/Shusshu/android-flags](https://github.com/Shusshu/android-flags).
 
 ### License
 ```
